@@ -5,11 +5,12 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from rareapi.models import RareUser
+from datetime import datetime
 
 
 @csrf_exempt
 def login_user(request):
-    
+
     req_body = json.loads(request.body.decode())
 
     # If the request is a HTTP POST, try to pull out the relevant information.
@@ -34,11 +35,7 @@ def login_user(request):
 
 @csrf_exempt
 def register_user(request):
-    '''Handles the creation of a new gamer for authentication
 
-    Method arguments:
-      request -- The full HTTP request object
-    '''
 
 
     req_body = json.loads(request.body.decode())
@@ -56,8 +53,8 @@ def register_user(request):
     rareuser = RareUser.objects.create(
         bio=req_body['bio'],
         profile_image_url=req_body['profile_image_url'],
-        created_on=req_body['created_on'],
-        active=req_body['active'],
+        created_on=datetime.now(),
+        active=True,
         user=new_user
     )
 
