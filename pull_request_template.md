@@ -1,6 +1,8 @@
 Description
 Fixes # (issue)
 
+
+
 Type of change
 
  Bug fix (non-breaking change which fixes an issue)
@@ -12,10 +14,14 @@ Type of change
  This change requires a documentation update
  
  
+ 
+ 
 Testing Instructions
 
 git fetch --all
 git checkout <branch-name>
+ 
+ 
  
  
 Checklist:
