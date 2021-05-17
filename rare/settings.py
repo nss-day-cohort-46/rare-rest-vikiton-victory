@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'rareapi.urls'
+ROOT_URLCONF = 'rare.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'rareapi.wsgi.application'
+WSGI_APPLICATION = 'rare.wsgi.application'
 
 
 # Database
