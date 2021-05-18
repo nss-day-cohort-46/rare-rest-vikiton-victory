@@ -1,0 +1,9 @@
+[
+  {
+      "model": "rareapi.tag",
+      "pk": 1,
+      "fields": {
+          "label": "Dumb Post"
+      }
+  }
+  ]
