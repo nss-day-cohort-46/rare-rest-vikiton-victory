@@ -1,3 +1,11 @@
 {
     "python.linting.pylintEnabled": true
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "rareapi-server",
+      "database": "db.sqlite3"
+    }
+  ]
 }
