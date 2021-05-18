@@ -1,0 +1,15 @@
+[
+    {
+    "model": "rareapi.post",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "category": 1,
+        "title": "This Post",
+        "publication_date": "2010-6-29",
+        "image_url": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fpiece-turd-icon-cartoon-style-vector-10863288&psig=AOvVaw3ro0uUF3YknZW9GIx-MX81&ust=1621436282919000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKDh8_--0_ACFQAAAAAdAAAAABAE",
+        "content": "Turd Ferguson",
+        "approved": true
+    }
+    }
+  ]
