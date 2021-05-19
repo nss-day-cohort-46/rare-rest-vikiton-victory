@@ -1,19 +1,46 @@
-"""View module for handling requests about game types"""
+"""View module for handling requests about category types"""
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
-from rareapi.models import Category
+from rareapi.models import Category, RareUser
+from rest_framework import status, viewsets
 
 
-class Categories(ViewSet):
-    """Level up game types"""
 
-    def retrieve(self, request, pk=None):
-        """Handle GET requests for single game type
+class CategoryView(ViewSet):
+    def create(self, request):
+        """Handle category operations
 
         Returns:
-            Response -- JSON serialized game type
+            Response -- JSON serialized category instance
+        """
+
+        category = Category()
+        category.label = request.data["label"]
+
+        # Try to save the new category to the database, then
+        # serialize the category instance as JSON, and send the
+        # JSON as a response to the client request
+        try:
+            category.save()
+            serializer = CategorySerializer(category, context={'request': request})
+            return Response(serializer.data)
+
+        # If anything went wrong, catch the exception and
+        # send a response with a 400 status code to tell the
+        # client that something was wrong with its request data
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for single category type
+
+        Returns:
+            Response -- JSON serialized category type
         """
         try:
             category = Category.objects.get(pk=pk)
@@ -23,10 +50,10 @@ class Categories(ViewSet):
             return HttpResponseServerError(ex)
 
     def list(self, request):
-        """Handle GET requests to get all game types
+        """Handle GET requests to get all category types
 
         Returns:
-            Response -- JSON serialized list of game types
+            Response -- JSON serialized list of category types
         """
         categories = Category.objects.all()
 
@@ -38,7 +65,7 @@ class Categories(ViewSet):
         return Response(serializer.data)
 
 class CategorySerializer(serializers.ModelSerializer):
-    """JSON serializer for game types
+    """JSON serializer for category types
 
     Arguments:
         serializers
