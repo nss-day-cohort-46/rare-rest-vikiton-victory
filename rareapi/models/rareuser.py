@@ -10,3 +10,11 @@ class RareUser(models.Model):
     created_on = models.DateTimeField()
     active = models.BooleanField()
     
+
+    @property
+    def first_name(self):
+        return self.user.first_name
+    
+    @property
+    def last_name(self):
+        return self.user.last_name
