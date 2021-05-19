@@ -64,6 +64,39 @@ class CategoryView(ViewSet):
             categories, many=True, context={'request': request})
         return Response(serializer.data)
 
+    def update(self, request, pk=None):
+        """Handle PUT requests for a category
+
+        Returns:
+        Response -- Empty body with 204 status code
+        """
+        rare_user = RareUser.objects.get(user=request.auth.user)
+
+        category = Category.objects.get(pk=pk)
+        category.label = request.data["label"]
+        category.rare_user = rare_user
+        category.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a single category
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            category = Category.objects.get(pk=pk)
+            category.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Category.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class CategorySerializer(serializers.ModelSerializer):
     """JSON serializer for category types
 
