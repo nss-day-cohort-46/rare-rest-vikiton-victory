@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from rareapi.models import Post, RareUser, Category
 
 
@@ -100,14 +101,16 @@ class PostView(ViewSet):
         Returns:
             Response -- JSON serialized list of game types
         """
+        rare_user = RareUser.objects.get(user=request.auth.user)
         posts = Post.objects.all()
-
+        posts.rare_user = rare_user
         # Note the addtional `many=True` argument to the
         # serializer. It's needed when you are serializing
         # a list of objects instead of a single object.
         serializer = PostSerializer(
             posts, many=True, context={'request': request})
         return Response(serializer.data)
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -120,7 +123,7 @@ class RareUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RareUser
-        fields = ['user']
+        fields = ['id', 'user', 'bio', 'profile_image_url', 'active', 'first_name', 'last_name']
 
 class PostSerializer(serializers.ModelSerializer):
 
