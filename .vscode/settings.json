@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "/Users/ericathompson/.local/share/virtualenvs/levelup-s7RnSWQT/bin/python",
+  "python.pythonPath": "/usr/bin/python",
   "python.linting.pylintEnabled": true,
   "sqltools.connections": [
       {
