@@ -1,0 +1,12 @@
+[
+    {
+        "model": "rareapi.comment",
+        "pk": 1,
+        "fields": {
+            "post": 1,
+            "author": 1,
+            "content": "More work to come",
+            "created_on": "2020-01-03"
+        }
+    }
+    ]

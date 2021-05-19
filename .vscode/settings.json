@@ -1,10 +1,16 @@
 {
+  "python.pythonPath": "/Users/ericathompson/.local/share/virtualenvs/levelup-s7RnSWQT/bin/python",
+  "python.linting.pylintEnabled": true,
   "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "driver": "SQLite",
-      "name": "rareapi-server",
-      "database": "db.sqlite3"
-    }
+      {
+          "previewLimit": 50,
+          "driver": "SQLite",
+          "name": "LevelUp",
+          "database": "db.sqlite3"
+      }
+  ],
+
+  "python.linting.pylintArgs": [
+      "--django-settings-module=levelup.settings",
   ]
 }
