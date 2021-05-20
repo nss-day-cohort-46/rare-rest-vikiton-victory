@@ -111,6 +111,16 @@ class PostView(ViewSet):
             posts, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(methods=["PUT"], detail=True)
+    # @action decorator is adding a new route that accepts PUT requests and adds postId to the url.
+    # /posts/1/update_tag
+    def update_tag(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        # Get single post
+        post.tags.add(request.data["tag"])
+        # Setting tag data being sent from the front end.
+        
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -128,8 +138,8 @@ class RareUserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     user = RareUserSerializer(many=False)
-    category = CategorySerializer(many=False)
 
     class Meta:
         model = Post
         fields = ['id', 'user', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved', 'tags']
+        depth = 1
