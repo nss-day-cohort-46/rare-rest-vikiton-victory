@@ -31,7 +31,7 @@ class PostView(ViewSet):
         post.approved = request.data["approved"]
         post.user = user
 
-        category = Category.objects.get(pk=request.data["category_id"])
+        category = Category.objects.get(pk=request.data["category"])
         post.category = category
 
         try:
