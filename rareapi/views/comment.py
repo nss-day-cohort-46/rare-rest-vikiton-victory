@@ -1,19 +1,21 @@
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
+from django.core.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from rareapi.models import Comment, RareUser, Post
+from django.contrib.auth.models import User
 
 class CommentView(ViewSet):
     def create(self, request):
-        """Handle POST operations
+        """Handle POST operations for comments
         Returns:
             Response -- JSON serialized comment instance
         """
         # Uses the token passed in the `Authorization` header
-        author = RareUser.objects.get(user=request.auth.user) 
         comment = Comment()
-        post = Post.objects.get(pk=request.data["post_id"])
+        author = RareUser.objects.get(user = request.auth.user) 
+        post = Post.objects.get(pk=request.data["post"])
         # Create a new Python instance of the comment class
         # and set its properties from what was sent in the
         # body of the request from the client.
@@ -73,4 +75,4 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'post', 'author', 'content')
+        fields = ('id', 'post', 'author', 'content', 'created_on')
