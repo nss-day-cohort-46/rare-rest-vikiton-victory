@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from rareapi.models import Comment, RareUser, Post
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class CommentView(ViewSet):
     def create(self, request):
@@ -13,16 +14,17 @@ class CommentView(ViewSet):
             Response -- JSON serialized comment instance
         """
         # Uses the token passed in the `Authorization` header
-        comment = Comment()
+        # post = Post()
         author = RareUser.objects.get(user = request.auth.user) 
-        post = Post.objects.get(pk=request.data["post"])
         # Create a new Python instance of the comment class
         # and set its properties from what was sent in the
         # body of the request from the client.
-        comment.post = post
-        comment.author = author
+        comment = Comment()
+        comment.post_id = request.data["post_id"]
         comment.content = request.data["content"]
-        comment.created_on = request.data["created_on"]
+        comment.author = author
+        comment.created_on = datetime.now()
+        # comment.content = request.data["content"]
 
         try:
             comment.save()
@@ -71,7 +73,6 @@ class CommentView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class CommentSerializer(serializers.ModelSerializer):
-
 
     class Meta:
         model = Comment
