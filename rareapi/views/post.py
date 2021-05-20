@@ -8,7 +8,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rareapi.models import Post, RareUser, Category
+from rareapi.models import Post, RareUser, Category, Tag
 from datetime import date
 
 
@@ -55,6 +55,7 @@ class PostView(ViewSet):
         post.image_url = request.data["image_url"]
         post.content = request.data["content"]
         post.approved = request.data["approved"]
+        post.tags = request.data["tags"]
         post.user = user
 
         category = Category.objects.get(pk=request.data["category"])
