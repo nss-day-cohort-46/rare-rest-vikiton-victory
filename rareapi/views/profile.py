@@ -20,6 +20,19 @@ class ProfileView(ViewSet):
         
         return Response(rareuser.data)
 
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for single post
+
+        Returns:
+            Response -- JSON serialized post
+        """
+        try:
+            rareuser = RareUser.objects.get(pk=pk)
+            serializer = RareUserSerializer(rareuser, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
 
         
 class UserSerializer(serializers.ModelSerializer):
@@ -34,4 +47,4 @@ class RareUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RareUser
-        fields= ('profile_image_url', 'bio', 'created_on', 'user')
+        fields= ('id','profile_image_url', 'bio', 'created_on', 'user')
