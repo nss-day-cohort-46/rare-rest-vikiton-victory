@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rareapi.models import Post, RareUser, Category
-from datetime import datetime
+from datetime import date
 
 
 class PostView(ViewSet):
@@ -25,7 +25,7 @@ class PostView(ViewSet):
 
         post = Post()
         post.title = request.data["title"]
-        post.publication_date = datetime.now()
+        post.publication_date = date.today()
         post.image_url = request.data["image_url"]
         post.content = request.data["content"]
         post.approved = request.data["approved"]
@@ -51,7 +51,7 @@ class PostView(ViewSet):
 
         post = Post.objects.get(pk=pk)
         post.title = request.data["title"]
-        post.publication_date = datetime.now()
+        post.publication_date = date.today()
         post.image_url = request.data["image_url"]
         post.content = request.data["content"]
         post.approved = request.data["approved"]
