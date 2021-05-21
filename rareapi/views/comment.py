@@ -43,14 +43,13 @@ class CommentView(ViewSet):
 
     def list(self, request):  
         comments = Comment.objects.all()
-
-
+        author = RareUser.objects.get(user=request.auth.user)
+        comments.author = author
         serializer = CommentSerializer(
             comments, many=True, context={'request': request})
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-
 
         comment = Comment.objects.get(pk=pk)
         comment.label = request.data["label"]
@@ -71,9 +70,17 @@ class CommentView(ViewSet):
 
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+class RareUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RareUser
+        fields = ['id', 'user', 'first_name', 'last_name']
+
 class CommentSerializer(serializers.ModelSerializer):
+    author = RareUserSerializer(many=False)
 
     class Meta:
         model = Comment
-        fields = ('id', 'post', 'author', 'content', 'created_on')
+        fields = ['id', 'post', 'author', 'content', 'created_on']
+        depth = 1

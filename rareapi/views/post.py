@@ -1,4 +1,5 @@
 # from django.contrib.auth.models import User
+from rareapi.models.comment import Comment
 from rareapi.models.category import Category
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseServerError
@@ -137,8 +138,15 @@ class RareUserSerializer(serializers.ModelSerializer):
         model = RareUser
         fields = ['id', 'user', 'bio', 'profile_image_url', 'active', 'first_name', 'last_name']
 
-class PostSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
+    author = RareUserSerializer(many=False)
+    class Meta:
+        model = Comment
+        fields = ['id', 'post', 'author', 'content', 'created_on']
+        depth = 1
 
+class PostSerializer(serializers.ModelSerializer):
+    comment_set = CommentSerializer(many=True)
     user = RareUserSerializer(many=False)
 
     class Meta:
