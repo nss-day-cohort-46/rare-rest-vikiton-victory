@@ -8,7 +8,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rareapi.models import Post, RareUser, Category
+from rareapi.models import Post, RareUser, Category, Tag
 from datetime import date
 
 
@@ -55,6 +55,7 @@ class PostView(ViewSet):
         post.image_url = request.data["image_url"]
         post.content = request.data["content"]
         post.approved = request.data["approved"]
+        post.tags = request.data["tags"]
         post.user = user
 
         category = Category.objects.get(pk=request.data["category"])
@@ -103,6 +104,7 @@ class PostView(ViewSet):
         rare_user = RareUser.objects.get(user=request.auth.user)
         posts = Post.objects.all()
         posts.rare_user = rare_user
+
         # Note the addtional `many=True` argument to the
         # serializer. It's needed when you are serializing
         # a list of objects instead of a single object.
@@ -110,6 +112,17 @@ class PostView(ViewSet):
             posts, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(methods=["PUT"], detail=True)
+    
+    # @action decorator is adding a new route that accepts PUT requests and adds postId to the url.
+    # /posts/1/update_tag
+    def update_tag(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        # Get single post
+        post.tags.add(request.data["tag"])
+        # Setting tag data being sent from the front end.
+        
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -127,7 +140,6 @@ class RareUserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     user = RareUserSerializer(many=False)
-    category = CategorySerializer(many=False)
 
     class Meta:
         model = Post

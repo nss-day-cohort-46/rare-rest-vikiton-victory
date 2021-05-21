@@ -7,11 +7,8 @@ from rareapi.models import Tag
 class TagView(ViewSet):
     def create(self, request):
 
-
         tag = Tag()
         tag.label = request.data["label"]
-
-
 
         try:
             tag.save()
@@ -32,13 +29,11 @@ class TagView(ViewSet):
     def list(self, request):  
         tags = Tag.objects.all()
 
-
         serializer = TagSerializer(
             tags, many=True, context={'request': request})
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-
 
         tag = Tag.objects.get(pk=pk)
         tag.label = request.data["label"]

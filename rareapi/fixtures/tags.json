@@ -5,5 +5,12 @@
       "fields": {
           "label": "Dumb Post"
       }
+  },
+  {
+      "model": "rareapi.tag",
+      "pk": 2,
+      "fields": {
+          "label": "Python"
+      }
   }
   ]
